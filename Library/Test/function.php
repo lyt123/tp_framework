@@ -1,5 +1,14 @@
 <?php
 /* User:lyt123; Date:2017/3/22; QQ:1067081452 */
+function dd($data){
+    var_dump($data);
+    exit();
+}
+
+function ddd($data){
+    var_dump($data);
+}
+
 function __autoload($className) {
     $frameworkFileName = FRAMEWORK_PATH . '/' . $className . '.php';
     if(is_file($frameworkFileName)) {
