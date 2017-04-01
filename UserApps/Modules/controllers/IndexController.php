@@ -21,10 +21,16 @@ class IndexController extends Controller{
 
     public function test()
     {
-        $this->_redirect(array(
-            'a' => 'index',
-            'c' => 'Index',
-            'param1' => '1'
-        ));
+//        $this->_redirect(array(
+//            'a' => 'index',
+//            'c' => 'Index',
+//            'param1' => '1'
+//        ));
+//        $this->_forward(array(
+//            'a' => 'index',
+//            'c' => 'Index',
+//            'param1' => '1'
+//        ));
+        
     }
 }

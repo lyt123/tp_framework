@@ -4,6 +4,10 @@
 
 class Response extends Base
 {
+    /**
+     * Des :跳转是一个服务端对另一个服务端的响应，所以独立出来
+     * Auth:lyt123
+     */
     public static function redirect($url)
     {
         if (is_string($url)) {
