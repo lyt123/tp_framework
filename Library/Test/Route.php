@@ -13,9 +13,9 @@ class Route {
                 $controllerHandler = new $controllerName();
                 if(method_exists($controllerHandler,$action)) {
                     $controllerHandler->$action();
-                } else {
+                } /*else {
                     echo 'the method does not exists';
-                }
+                }*/
             } else {
                 echo 'the class does not exists';
             }

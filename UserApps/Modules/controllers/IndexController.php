@@ -1,6 +1,6 @@
 <?php
 /* User:lyt123; Date:2017/3/22; QQ:1067081452 */
-class IndexController {
+class IndexController{
     public function index() {
         $modelPath = dirname(__FILE__) . '/../models/IndexModel.php';
         if(file_exists($modelPath)) {
