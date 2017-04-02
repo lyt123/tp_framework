@@ -4,6 +4,13 @@
 
 class Controller extends base
 {
+    private $_token = '';
+
+    public function __construct()
+    {
+        $this->_setToken();
+    }
+
     /**
      * Des :
      * use :
@@ -14,13 +21,11 @@ class Controller extends base
      * ));
      * Auth:lyt123
      */
-    protected function _redirect(array $arr)
+    protected function _redirect(Array $arr)
     {
-        $controller = empty($_GET['c']) ? C('defaultController') : trim($_GET['c']); //设置了默认的控制器
-        $action = empty($_GET['a']) ? C('defaultAction') : trim($_GET['a']); //设置了默认的Action
-        array_key_exists('c', $arr) || $arr['c'] = $controller;
-        array_key_exists('a', $arr) || $arr['a'] = $action;
-        $str = './index.php?';
+        array_key_exists('c', $arr) || $arr['c'] = Path::getController();
+        array_key_exists('a', $arr) || $arr['a'] = Path::getAction();
+        $str = 'http://' . Path::getBasePath() . '/index.php?';
         foreach ($arr as $key => $val) {
             if (!is_int($key)) {
                 $str .= ($key . '=' . $val . '&');
@@ -33,8 +38,8 @@ class Controller extends base
 
     protected function _forward(Array $arr)
     {
-        $controller = empty($_GET['c']) ? C('defaultController') : trim($_GET['c']); //设置了默认的控制器
-        $action = empty($_GET['a']) ? C('defaultAction') : trim($_GET['a']); //设置了默认的Action
+        $controller = Path::getController();
+        $action = Path::getAction();
         if (array_key_exists('c', $arr)) {
             $controller = $arr['c'];
         }
@@ -60,5 +65,43 @@ class Controller extends base
                 //时间有限，不写了
             }
         }
+    }
+
+    protected function _assign(Array $arr)
+    {
+        View::assign($arr);
+    }
+
+    protected function _display($str)
+    {
+        if (is_string($str)) {
+            $str = str_replace(array(
+                '.', '#'
+            ), array(
+                '/', '.'
+            ), $str);
+            View::display(MODULES_PATH . '/views/' . $str . '.php');
+        }
+    }
+
+    private function _setToken()
+    {
+        if (empty($_COOKIE['_csrfToken'])) {
+            $token = substr(md5(time()), 0, mt_rand(10, 15));
+            $this->_token = $token;
+            setcookie('_csrfToken', $token, time() + 3600 * 24 * 7);
+        } else {
+            $this->_token = $_COOKIE['_csrfToken'];
+        }
+    }
+
+    protected function _getToken()
+    {
+        //增加一个判断：假设用户访问A页面的时候得到token，这个token还有两秒就过期了，这个用户三秒之后点击这个含有token的链接到达B页面，B页面由于COOKIE中的token已经失效，所以重新产生一个token，然后再和传递的这个token比较，自然不匹配
+        if(empty($_COOKIE['_csrfToken'])){
+            $this->_setToken();
+            return '';
+        }
+        return $this->_token;
     }
 }
