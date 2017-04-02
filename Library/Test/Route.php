@@ -6,7 +6,6 @@ class Route
 {
     public static function run()
     {
-
         $controller = empty($_GET['c']) ? 'Index' : trim($_GET['c']); //设置了默认的控制器
         $action = empty($_GET['a']) ? 'index' : trim($_GET['a']); //设置了默认的Action
         $controllerBasePath = APP_PATH . '/UserApps/Modules/Controllers/';
